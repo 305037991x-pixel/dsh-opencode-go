@@ -18,7 +18,7 @@ A persistent **OpenCode GO usage chip** in the conversation header: watches **tw
 ## 安装 / Install
 
 ```bash
-dsh plugin --profile web add github:<owner>/dsh-opencode-go
+dsh plugin --profile web add github:305037991x-pixel/dsh-opencode-go
 ```
 
 重启 `dsh web` 并硬刷新页面（Ctrl+Shift+R）。
