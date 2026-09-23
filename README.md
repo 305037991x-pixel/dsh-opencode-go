@@ -23,6 +23,23 @@ dsh plugin --profile web add github:305037991x-pixel/dsh-opencode-go
 
 重启 `dsh web` 并硬刷新页面（Ctrl+Shift+R）。
 
+## 兼容性 / Compatibility
+
+**与核版本解耦**：所有 `@deepseek-ai/dsh-*` 核心包都声明为**可选 `peerDependencies`**
+（范围 `>=0.1.0-rc.6 <0.2.0`），插件自身不安装、不携带任何核心包副本，
+运行时一律使用**宿主正在运行的那份核**。因此升级 DSH 核不需要重装本插件。
+
+The plugin never bundles or pins core packages. All `@deepseek-ai/dsh-*` imports resolve to
+whatever core the host is currently running, so it survives core upgrades without reinstalling.
+
+- 宿主半区（`lib/index.js`）只依赖两个稳定接口：`dsh-credentials` 的 `credentialRef`
+  与 `dsh-launch-environment` 的 `launchEnvironmentOf`。
+- 浏览器半区（`lib/client.js`）通过 `dsh.client.inject` 由宿主的客户端模块表提供依赖，
+  同样与核版本无关。
+- `dsh.compatibility.dshReleases` 记录已验证可用的核版本。
+- 刻意**不锁版本**：把核心包写进 `dependencies` 并钉死具体版本会让插件在核升级后
+  解析到旧副本，从而加载失败。
+
 ## 配置 / Configuration
 
 在 `$DSH_HOME/.credentials.yaml` 中配置（或环境变量同名）：
